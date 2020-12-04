@@ -20,10 +20,12 @@ def validate_hgt(hgt):
 
     if unit == 'in':
         valid = 59 <= value <= 76
-    valid = 150 <= value <= 193
+    elif unit == 'cm':
+        valid = 150 <= value <= 193
+    else:
+        valid = False
 
     return valid
-
 
 def validate_hcl(hcl):
     return re.search(r'#[0-9a-f]{6}', hcl)
@@ -32,7 +34,7 @@ def validate_ecl(ecl):
     return ecl in {'amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth'}
 
 def validate_pid(pid):
-    return re.search(r'[0-9]{9}', pid)
+    return re.search(r'^\d{9}$', pid)
 
 
 def is_valid(passport):
@@ -44,12 +46,13 @@ def is_valid(passport):
         'hcl': validate_hcl,
         'ecl': validate_ecl,
         'pid': validate_pid,
-        'cid': lambda _: True,
     }
 
-    for field, val in passport.items():
-        if not required[field](val):
-            return False
+    for field, validator in required.items():
+        if val := passport.get(field):
+            if validator(val):
+                continue
+        return False
 
     return True
 
