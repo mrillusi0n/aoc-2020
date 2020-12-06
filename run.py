@@ -1,10 +1,8 @@
-def get_inputs(folder):
-    with open(folder + '/input.txt') as input_file:
-        inputs = input_file.readlines()
+from customs import solve, read_input
 
-    return inputs
+def main():
+    tests = read_input(f'customs/input.txt')
+    print(solve(tests))
 
-
-from passwords import solve
-
-print(solve(get_inputs('passwords')))
+if __name__ == '__main__':
+    main()
