@@ -28,7 +28,7 @@ def load_relations(lines):
     for s in lines:
         t = re.sub(r'[^\w ,]| ?\b(?:bags?|no|other|contain)\b', '', s)
         ctype, color, *rest = t.split(maxsplit=2)
-        info[f'{ctype} {color}']['can_shine'] = False
+        # info[f'{ctype} {color}']['can_shine'] = False
 
         for p in rest:
             for q in p.split(', '):
@@ -37,8 +37,25 @@ def load_relations(lines):
 
     return info # 44, 38, 41, 55, 54, 39, 67
 
+def count_inner_bags(bag_color, relations):
+    inner_bags = relations[bag_color]
+    print(f'{bag_color} contains {inner_bags}')
+
+    if not inner_bags:
+        return 1
+
+    total = 0
+    for bag in inner_bags:
+        print(f'{inner_bags[bag]} * {bag}')
+        total += (count := inner_bags[bag] * count_inner_bags(bag, relations))
+
+
+
+    # return 1 + sum(inner_bags[bag] * count_inner_bags(bag, relations) for bag in inner_bags)
+    return total + 1
+
 def get_shiny_holders(relations):
     return sum(shiny_bag_reachable(bag, relations) for bag in relations)
 
 def solve(data):
-    return get_shiny_holders(load_relations(data))
+    return count_inner_bags('shiny gold', load_relations(data)) - 1
