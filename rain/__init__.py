@@ -41,15 +41,14 @@ def get_end_position(steps):
         'W': point.move_west,
         'L': point.turn_left,
         'R': point.turn_right,
-        'F': (lambda: point.directions[point.current_dir])(), # FIXME reactivity necessary
+        'F': lambda x: point.directions[point.current_dir](x)
     }
 
     for step in steps:
         f, val = step[0], int(step[1:])
         cmd_map[f](val)
-        print(point, cmd_map[f])
 
-    return point
+    return point.x + point.y
 
 def solve(x):
     return get_end_position(x)
