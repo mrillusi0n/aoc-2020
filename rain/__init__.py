@@ -1,3 +1,5 @@
+from math import sin, cos, radians
+
 def read_input(file):
     return list(map(lambda x: x.rstrip(), file.readlines()))
 
@@ -20,19 +22,44 @@ class Point:
         self.x += val
 
     def move_south(self, val):
-        self.y += val
+        self.y -= val
 
     def move_west(self, val):
         self.x -= val
 
     def move_north(self, val):
-        self.y -= val
+        self.y += val
+
+    def translate(self, x, y):
+        self.x += x
+        self.y += y
+
+    def manhattan_distance(self):
+        return abs(self.x) + abs(self.y)
 
     def __repr__(self):
         return f'Point({self.x}, {self.y})'
 
+class WayPoint(Point):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.start = Point(0, 0)
+
+    def turn_left(self, degrees):
+        r = radians(degrees)
+        new_x = self.x * cos(r) - self.y * sin(r)
+        new_y = self.x * sin(r) + self.y * cos(r)
+
+        self.x, self.y = list(map(round, (new_x, new_y)))
+    
+    def turn_right(self, degrees):
+        self.turn_left(-degrees)
+
+    def move(self, val):
+        self.start.translate(val * self.x, val * self.y)
+
 def get_end_position(steps):
-    point = Point(0, 0)
+    point = WayPoint(10, 1)
 
     cmd_map = {
         'N': point.move_north,
@@ -41,14 +68,15 @@ def get_end_position(steps):
         'W': point.move_west,
         'L': point.turn_left,
         'R': point.turn_right,
-        'F': lambda x: point.directions[point.current_dir](x)
+        'F': point.move,
     }
 
     for step in steps:
         f, val = step[0], int(step[1:])
         cmd_map[f](val)
+        print(step, point, point.start)
 
-    return point.x + point.y
+    return point.start.manhattan_distance()
 
 def solve(x):
     return get_end_position(x)
