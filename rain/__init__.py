@@ -1,5 +1,3 @@
-from math import sin, cos, radians
-
 def read_input(file):
     return list(map(lambda x: x.rstrip(), file.readlines()))
 
@@ -46,14 +44,12 @@ class WayPoint(Point):
         self.start = Point(0, 0)
 
     def turn_left(self, degrees):
-        r = radians(degrees)
-        new_x = self.x * cos(r) - self.y * sin(r)
-        new_y = self.x * sin(r) + self.y * cos(r)
-
-        self.x, self.y = list(map(round, (new_x, new_y)))
+        for _ in range(degrees // 90):
+            self.x, self.y = -self.y, self.x
     
     def turn_right(self, degrees):
-        self.turn_left(-degrees)
+        for _ in range(degrees // 90):
+            self.x, self.y = self.y, -self.x
 
     def move(self, val):
         self.start.translate(val * self.x, val * self.y)
