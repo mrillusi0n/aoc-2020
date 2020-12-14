@@ -1,7 +1,6 @@
 def get_tree_count(geo, step_right, step_down):
     trees = 0
     cols = len(geo[0])
-    start = 1
 
     for i, row in enumerate(geo[::step_down]):
         trees += 1 if row[(i * step_right) % cols] == '#' else 0
