@@ -10,8 +10,8 @@ def get_nums(nums, num):
     return 0
 
 def get_rule_breaker(nums):
-    for i, num in enumerate(nums[25:]):
-        if not get_nums(nums[i:i+25], num):
+    for i, num in enumerate(nums[5:]): # FIXME create a param for the start idx
+        if not get_nums(nums[i:i+5], num):
             return num
 
     return -1
@@ -24,15 +24,15 @@ def break_encryption(nums):
     for num in nums:
         if running_sum == breaker:
             break
-        if running_sum > breaker:
+        if running_sum + num > breaker:
             running_sum -= block[0]
             del block[0]
         
         running_sum += num
         block.append(num)
 
-    return block
+    return min(block) + max(block)
 
 
 def solve(i):
-    return get_rule_breaker(i)
+    return break_encryption(i)
