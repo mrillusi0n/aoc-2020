@@ -1,3 +1,6 @@
+def read_input(file):
+    return list(map(int, map(str.rstrip, file.readlines())))
+
 def solve(years):
     years_set = set(years)
 

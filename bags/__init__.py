@@ -2,7 +2,7 @@ import re
 from collections import defaultdict, Counter
 
 def read_input(file):
-    return list(map(lambda x: x.rstrip(), file.readlines()))
+    return list(map(str.rstrip, file.readlines()))
 
 def shiny_bag_reachable(bag_color, relations):
     print(f'Checking if {bag_color} can have a shiny gold bag')
