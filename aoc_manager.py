@@ -32,8 +32,10 @@ def run(args):
                            os.scandir()))
 
     if day := args.day:
-        return run_mod(import_module(next(filter(lambda dir_name: dir_name.startswith(str(day)),
-                                                 dir_names))))
+        dir_names = filter(
+            lambda dir_name: dir_name.startswith(str(day)),
+            dir_names)
+
     answers = {}
 
     for d in dir_names:
@@ -41,7 +43,6 @@ def run(args):
         answers[day] = run_mod(import_module(d), get_input_text(d)) # f"Day {day} — {' '.join(problem_title.split('_')).title()}"
 
     print(answers)
-
 
 
 parser = argparse.ArgumentParser(description='A simple tool to manage Advent of Code problems.')
