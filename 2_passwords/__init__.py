@@ -1,5 +1,8 @@
 from collections import Counter
 
+def parse_input(text):
+    return text.strip().split('\n')
+
 def is_valid(p):
     constraint, password = p.split(': ')
     bounds, c = constraint.split()
@@ -18,5 +21,10 @@ def is_still_valid(p):
 
     return 0 < res <= 1
 
-def solve(passwords):
-    return len(list(filter(lambda x: is_still_valid(x), passwords)))
+def solve(passwords, parts):
+    solvers = {
+        1: len(list(filter(is_valid, passwords))),
+        2: len(list(filter(is_still_valid, passwords))),
+    }
+
+    return list(map(solvers.get, parts))
