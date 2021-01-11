@@ -13,7 +13,7 @@ def get_three_years(years):
 
     for a in years_set:
         for b in years_set - {a}:
-            for c in years_set - {b}:
+            for c in years_set - {a, b}:
                 if c == 2020 - a - b:
                     return a * b * c
 
